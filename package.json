@@ -1,0 +1,23 @@
+{
+  "name": "accessplus",
+  "version": "1.0.0",
+  "description": "access control application that helps institutions monitor, inflow and exit of visitors",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "inflow",
+    "monitor",
+    "institution",
+    "visitor"
+  ],
+  "author": "michealcob",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "js-lambda-expression": "^1.1.2",
+    "mongoose": "^5.2.2"
+  }
+}
