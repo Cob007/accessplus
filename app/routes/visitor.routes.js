@@ -15,4 +15,10 @@ module.exports = (app) => {
 
     // Delete a Note with noteId
     app.delete('/visitor/:visitorId', visitor.delete);
+
+    //querying a database for name search
+    app.get('/search', visitor.search);
+
+    //querying for date
+    app.post('/date', visitor.date)
 }

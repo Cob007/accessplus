@@ -38,22 +38,6 @@ exports.create = (req, res) => {
         status: true/*true for user sign in*/
     });
 
-
-    // Save Note in the database
-
-    /*visitor.save(function(err){
-     if(err) throw err;
-     console.log('User saved successfully');
-     res.json({
-     success: true,
-     data: {
-     name : req.body.viname,
-     number : req.body.number,
-     company : req.body.company,
-     }
-     });
-     });*/
-
     visitor.save()
         .then(data => {
             res.send(data);
@@ -152,3 +136,45 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+exports.search = (req, res) =>{
+    var query = req.query;
+    Visitor.find(parseRegExpProperties(query))
+        .then(visitor =>{
+            res.send(visitor);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving notes."
+            });
+        })
+
+    /*Visitor.find(req.query)
+        .then(visitor =>{
+            res.send(visitor);
+        }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving notes."
+        });
+    })*/
+};
+
+function parseRegExpProperties(obj) {
+    var newObject = {};
+    for(var propName in obj) {
+        if(typeof(obj[propName]) != "undefined") {
+            newObject[propName] = {'$regex': obj[propName], '$options': "i" };
+        }
+    }
+    return newObject;
+}
+
+exports.date = (req, res) =>{
+    var startAt = req.body.start;
+    var stopAt = req.body.stop;
+
+    var end = new Date(stopAt);
+    end.setDate(end.getDate() + 1);
+    Visitor.find({updatedAt : { $gte : new Date(startAt), $lt: end} }, function(err, docs){
+        res.send(docs)
+    });
+}
