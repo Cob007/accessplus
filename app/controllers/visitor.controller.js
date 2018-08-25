@@ -22,11 +22,16 @@ exports.create = (req, res) => {
             message: "visitor company can not be empty"
         });
     }
-    if (!req.body.viaim) {
+    if (!req.body.cond){
+        return res.status(400).send({
+            message: "visitor cond can not be empty"
+        });
+    }
+    /*if (!req.body.viaim) {
         return res.status(400).send({
             message: "visitor aim can not be empty"
         });
-    }
+    }*/
 
 
     // Create a Note
@@ -34,6 +39,7 @@ exports.create = (req, res) => {
         viname: req.body.viname,
         number: req.body.number,
         company: req.body.company,
+        cond : req.body.cond,
         viaim: req.body.viaim,
         status: true/*true for user sign in*/
     });
@@ -91,6 +97,7 @@ exports.update = (req, res) => {
         viname: req.body.viname,
         number: req.body.number,
         company: req.body.company,
+        cond: req.body.cond,
         viaim: req.body.viaim,
         status: false/*true for user sign in*/
     }, {new: true})

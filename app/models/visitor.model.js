@@ -8,6 +8,7 @@ const VisitorSchema = mongoose.Schema({
     number : String,
     company : String,
     viaim : String,
+    cond : String,
     status : Boolean
 }, {
     timestamps : true

@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
+
 const mongoose = require('mongoose');
 
 var port =process.env.PORT || 3030;
