@@ -3,6 +3,41 @@
  */
 const Visitor = require('../models/visitor.model.js');
 
+exports.signin = (req, res) =>{
+    if (!req.body.viname) {
+        return res.status(400).send({
+            message: "Visitor name can not be empty"
+        });
+    }
+    if (!req.body.company) {
+        return res.status(400).send({
+            message: "visitor company can not be empty"
+        });
+    }
+    if (!req.body.cond){
+        return res.status(400).send({
+            message: "visitor cond can not be empty"
+        });
+    }
+
+    const visitor = new Visitor({
+        viname: req.body.viname,
+        company: req.body.company,
+        cond : req.body.cond,
+        status: true/*true for user sign in*/
+    });
+
+    visitor.save()
+        .then(data => {
+            res.send(data);
+        }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the Note."
+        });
+    });
+
+}
+
 // Create and Save a new Note
 exports.create = (req, res) => {
 
@@ -27,11 +62,11 @@ exports.create = (req, res) => {
             message: "visitor cond can not be empty"
         });
     }
-    /*if (!req.body.viaim) {
+    if (!req.body.viaim) {
         return res.status(400).send({
             message: "visitor aim can not be empty"
         });
-    }*/
+    }
 
 
     // Create a Note
@@ -120,6 +155,33 @@ exports.update = (req, res) => {
     });
 
 };
+
+exports.signout = (req, res) => {
+    // Find note and update it with the request body
+    Visitor.findByIdAndUpdate(req.params.visitorId, {
+        viname: req.body.viname,
+        company: req.body.company,
+        cond: req.body.cond,
+        status: false/*true for user sign in*/
+    }, {new: true})
+        .then(visitor => {
+            if(!visitor) {
+                return res.status(404).send({
+                    message: "Note not found with id " + req.params.visitorId
+                });
+            }
+            res.send(visitor);
+        }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Note not found with id " + req.params.visitorId
+            });
+        }
+        return res.status(500).send({
+            message: "Error updating note with id " + req.params.visitorId
+        });
+    });
+}
 
 // Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
